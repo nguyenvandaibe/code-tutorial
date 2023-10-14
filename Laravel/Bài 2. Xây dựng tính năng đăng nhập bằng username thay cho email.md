@@ -1,35 +1,7 @@
 # HƯỚNG DẪN VIẾT CODE LARAVEL
-## 1. Khởi tạo project
-Mở command line tại thư mục dự định chứa source code và chạy lệnh sau:
-```
-larvel new my-project
-```
+# BÀI 2. XÂY DỰNG TÍNH NĂNG ĐĂNG NHẬP BẰNG USERNAME THAY CHO EMAIL
 
-## 2. Thiết lập Laravel UI
-Hướng dẫn: https://packagist.org/packages/laravel/ui
-Mở project bằng Visual Studio Code, mở Terminal và chạy các câu lệnh như sau:
-- Cài đặt Laravel UI
-```
-composer require laravel/ui
-```
-
-- Frontend scaffolding
-```
-php artisan ui bootstrap --auth
-```
-
-- Compile source frontend:
-```
-npm install
-npm run build
-```
-
-
-## 3. Thiết lập đăng nhập bằng username thay vì email
-
-**Gợi ý:** [Tham khảo các file thay đổi thực hiện](https://github.com/nguyenvandaibe/hoacanh-online/commit/d57f335c87fff9ef0a7080072f36e87ccb505087)
-
-### Bước 1. Bổ sung cột `username` vào bảng `users`**
+## Bước 1. Bổ sung cột `username` vào bảng `users`**
 Chạy command line sau để tạo migration:
 ```
 php artisan make:migration add_username_column_to_users_table
@@ -73,7 +45,7 @@ php artisan migrate
 Kiểm tra lại thông tin cột trong cơ sở dữ liệu.
 
 
-### Bước 2. Sửa model User
+## Bước 2. Sửa model User
 Mở file /app/Models/User.php, cập nhật $fillables:
 ```
     /**
@@ -89,7 +61,7 @@ Mở file /app/Models/User.php, cập nhật $fillables:
 
 Ý nghĩa: Bổ sung thêm thuộc tính `username` để sau này create đổi tượng của model User.
 
-### Bước 3. Cập nhật LoginController
+## Bước 3. Cập nhật LoginController
 Trong class `LoginController` có sử dụng một trait là `AuthenticatesUsers`, có thể hiểu đơn giản là `LoginController` thực tế có các phương thức y hệt như trong trait `AuthenticatesUsers`. Ta thực hiện ghi đè phương thức `username()` vào `LoginController` bằng cách bổ sung code như sau:
 ```
 class LoginController extends Controller
@@ -112,7 +84,7 @@ class LoginController extends Controller
 ```
 Ý nghĩa: Trong trait `AuthenticatesUsers`, phương thức `username()` trả về giá trị 'email'. Điều này có nghĩa là mặc định, Laravel sử dụng giá trị `email` của model `User` để login. Nay ta chuyển về return 'username' thì sẽ dùng được `username` để login.
 
-### Bước 4. Cập nhật RegisterController
+## Bước 4. Cập nhật RegisterController
 - Sửa phương thức là `validator`:\
 Phương thức này nhận đầu vào là mảng `$data` truyền từ form lên, có vai trò kiểm tra tính đúng đắn của dữ liệu được submit từ form. Ta sẽ thêm quy tắc (rule) validate cho thông tin `username`:
 ```
@@ -154,7 +126,7 @@ Phương thức này chính là nơi để tạo ra đối tượng của model 
     }
 ```
 
-### Bước 5. Sửa view login và register
+## Bước 5. Sửa view login và register
 Vị trí file:
 - Trang login: /resources/views/auth/login.blade.php
 - Trang register: /resources/views/auth/register.blade.php
@@ -183,9 +155,22 @@ Trang login: Sửa phần input của `Email Address`:
 ...
 ```
 
-
 Trang register: Sao chép phần input của `Email Address`, đổi giá trị của `type="email"` thành `type="text"` và các property `email` thành `username`:
 ```
+                        <div class="row mb-3">
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
 ```
 
-
+## Tham khảo
+[Tham khảo các file thay đổi thực hiện](https://github.com/nguyenvandaibe/hoacanh-online/commit/d57f335c87fff9ef0a7080072f36e87ccb505087)
