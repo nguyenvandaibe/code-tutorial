@@ -35,7 +35,7 @@ php artisan make:migration create_pots_table
 ```
 
 File migration `***_create_pots_table.php` được tạo ra, sử method `up` để bổ sung các cột cho bảng này:
-```
+```php
     /**
      * Run the migrations.
      */
@@ -61,11 +61,11 @@ php artisan migrate
 ```
 
 Tạo 2 bản ghi chậu cảnh mới bằng cách chạy các câu truy vấn sau (Laravel có công cụ tạo dữ liệu mẫu, sẽ trình bày sau):
-```
+```sql
 INSERT INTO `hoacanh_online`.`pots` (`id`, `name`, `image`, `dimesion_length`, `dimesion_width`, `dimesion_height`, `price`, `created_at`, `updated_at`) VALUES ('1', 'Chậu hoa hình chữ nhật đẹp', 'https://s3-minio.vobaitap.online/hoacanh-online/pots/chau-1.jpg', '150', '150', '150', '1000000', now(), now());
 ```
 
-```
+```sql
 INSERT INTO `hoacanh_online`.`pots` (`id`, `name`, `image`, `dimesion_length`, `dimesion_width`, `dimesion_height`, `price`, `created_at`, `updated_at`) VALUES ('2', 'Chậu hoa xyz', 'https://s3-minio.vobaitap.online/hoacanh-online/pots/chau-2.jpg', '100', '80', '20', '200000', now(), now());
 ```
 
@@ -79,7 +79,7 @@ php artisan make:model Pot
 ```
 
 Model `Pot.php` mới được tạo ra ở thư mục `app/Models`:
-```
+```php
 <?php
 
 namespace App\Models;
@@ -95,7 +95,7 @@ class Pot extends Model
 
 **Sửa model**\
 Ta cập nhật thông tin `$fillables` cho model `Pot`:
-```
+```php
     /**
      * The attributes that are mass assignable.
      *
@@ -124,7 +124,7 @@ php artisan make:controller PotsController
 File `PotsController.php` mới sẽ được tạo ra ở trong thư mục `app/Http/Controllers`.\
 
 Nội dung ban đầu của file như sau:
-```
+```php
 <?php
 
 namespace App\Http\Controllers;
@@ -138,7 +138,7 @@ class PotsController extends Controller
 ```
 
 ### Bước 4. Tạo một method để hiển thị danh sách
-```
+```php
 <?php
 
 namespace App\Http\Controllers;
@@ -177,7 +177,7 @@ class PotsController extends Controller
 ![](/Laravel/Images/Bai%203/vi-tri%20view-pots.admin_all_pots.png "Vị trí view pots.admin_all_pots")
 
 Để chứng minh view đã nhận được dữ liệu, ta sẽ sửa view `admin_all_pots.blade.php` để hiển thị được danh sách chậu cảnh:
-```
+```php
 @extends('layouts.app')
 
 @section('content')
@@ -198,7 +198,7 @@ class PotsController extends Controller
 
 ### Bước 5. Tạo một route dẫn sang view "Danh sách các chậu cảnh"
 Sửa file `routes/web.php` như sau:
-```
+```php
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -229,7 +229,7 @@ Route::get('/admin/pots', [PotsController::class, 'index']);
 ```
 
 Ta sẽ đặt tên route `/admin/pots` là `admin.pots.index`. Thêm vào đó, nghiệp vụ này yêu cầu phải login thì mới tạo `Pot` được. Ta sẽ sửa route thêm như thế này:
-```
+```php
 ...
 Route::get('/admin/pots', [PotsController::class, 'index'])->middleware('auth')->name('admin.pots.index');
 ```
@@ -239,4 +239,4 @@ Kết quả:
 ![](/Laravel/Images/Bai%203/Ket%20qua.png "Giao diện")
 
 ## 3. Tham khảo
-[Tham khảo các file thay đổi thực hiện](https://github.com/nguyenvandaibe/hoacanh-online/commit/935836de513782bb14f3bb1bfd66fe1852674cdd)
+[Tham khảo các file thay đổi](https://github.com/nguyenvandaibe/hoacanh-online/commit/935836de513782bb14f3bb1bfd66fe1852674cdd)
