@@ -233,7 +233,7 @@ Như vậy, ta có thể lấy ra các giá trị `files` và các `key` của `
 
 ### Bước 5. Xây dựng tính năng upload file lên MinIO
 #### Phân tích
-Chúng ta sẽ tư duy rằng việc upload file này không chỉ cần cho việc tạo chậu cảnh mới mà có thể còn dùng cho nhiều chức năng khác. Vì thế chúng ta viết một class riêng để xử lý nghiệp vụ này.\
+Chúng ta sẽ tư duy rằng việc upload file này không chỉ cần cho việc tạo chậu cảnh mới mà có thể còn dùng cho nhiều chức năng khác. Vì thế sau này chúng ta viết một class riêng để xử lý nghiệp vụ này. Còn trong ngữ cảnh hiện tại, tôi viết luôn nó vào trong `PotsController`.\
 Nghiệp vụ này liên quan đến file storage. Trong đó MinIO là hệ thống file storage tương tự Amazon S3. Tham khảo [Laravel File storage](https://laravel.com/docs/10.x/filesystem#amazon-s3-compatible-filesystems) để tìm hiểu thêm.
 
 #### Cài đặt thư viện
